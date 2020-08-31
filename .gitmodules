@@ -1,0 +1,3 @@
+[submodule "src/github.com/wsw364321644/go-botil"]
+	path = src/github.com/wsw364321644/go-botil
+	url = https://github.com/wsw364321644/go-botil.git

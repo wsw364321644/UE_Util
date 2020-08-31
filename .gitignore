@@ -1,0 +1,17 @@
+.svn
+.idea
+bin
+redis
+ExportCatalogue
+pkg
+sumdb
+__pycache__
+
+src/GenerateRedeemCode
+Third/postman/newman
+
+
+*.log
+*.sum
+*.obj
+assets_vfsdata.go
