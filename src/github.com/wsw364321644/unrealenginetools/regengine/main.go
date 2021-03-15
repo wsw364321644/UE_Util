@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/wsw364321644/unrealenginetools/sharedcode"
-	"github.com/wsw364321644/unrealenginetools/sharedcode/log"
+	"github.com/wsw364321644/go-botil/log"
 	"golang.org/x/sys/windows/registry"
 	"path/filepath"
 )

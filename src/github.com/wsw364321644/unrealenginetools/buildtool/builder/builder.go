@@ -4,10 +4,11 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"github.com/wsw364321644/unrealenginetools/buildtool/settings"
 	"github.com/wsw364321644/go-botil"
+	"github.com/wsw364321644/go-botil/log"
+	"github.com/wsw364321644/unrealenginetools/buildtool/settings"
 	"github.com/wsw364321644/unrealenginetools/sharedcode"
-	"github.com/wsw364321644/unrealenginetools/sharedcode/log"
+
 	"io"
 	"os"
 	"os/exec"

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/wsw364321644/go-botil"
 	"github.com/wsw364321644/unrealenginetools/buildtool/builder"
-	"github.com/wsw364321644/unrealenginetools/sharedcode/log"
+	"github.com/wsw364321644/go-botil/log"
 
 	"strconv"
 )

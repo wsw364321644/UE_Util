@@ -15,4 +15,5 @@ require (
 	github.com/wsw364321644/go-botil v0.1.5
 	golang.org/x/sys v0.0.0-20190422165155-953cdadca894
 	gopkg.in/ini.v1 v1.57.0
+	github.com/wsw364321644/go-botil v0.1.6
 )

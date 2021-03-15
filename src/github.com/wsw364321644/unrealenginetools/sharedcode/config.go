@@ -1,7 +1,7 @@
 package sharedcode
 
 import (
-	"github.com/wsw364321644/unrealenginetools/sharedcode/log"
+	"github.com/wsw364321644/go-botil/log"
 	"gopkg.in/ini.v1"
 )
 
