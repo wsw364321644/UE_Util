@@ -8,6 +8,7 @@ import (
 	"github.com/wsw364321644/go-botil/log"
 	"github.com/wsw364321644/unrealenginetools/buildtool/settings"
 	"github.com/wsw364321644/unrealenginetools/sharedcode"
+	"io/ioutil"
 
 	"io"
 	"os"
@@ -38,10 +39,9 @@ func BuildProject()error{
 	buildConfiguration:=settings.Flags.CONFIG
 	UATFlag := true
 	OnlyCookFlag:=settings.Flags.ONLYCOOK
-	sonkwo_test_flag:=settings.Flags.SONKWOTEST
-	client_test_flag := settings.Flags.TESTGAME
+
 	plat,_:=settings.ParsePlatformStr(settings.Flags.PLATFORM)
-	gameplat,_:=settings.ParseGamePlatformStr(settings.Flags.GAMEPLAT)
+
 	osstr:=settings.GetOSStr(plat)
 	if(!settings.Flags.SILENCE){
 		for plat := settings.Plat_Begin + 1; plat < settings.Plat_End; plat++ {
@@ -90,31 +90,6 @@ func BuildProject()error{
 			PackFlag = botil.GetScanBoolFlag("Pack Resource (y/n):", true)
 		}
 	}
-	if (PackFlag) {
-		if(!settings.Flags.SILENCE){
-
-			for plat := settings.GP_Begin + 1; plat < settings.GP_End; plat++ {
-				platstr := settings.GetGamePlatformStr(plat)
-				if (platstr != "") {
-					fmt.Printf("%d-%s\n", plat, platstr)
-				}
-			}
-			indexstr := botil.CheckedScanfln("choose game plat:", func(input string) bool {
-				i, err := strconv.ParseInt(input, 10, 64)
-				if (err == nil && settings.GetGamePlatformStr(settings.GamePlatformType(i)) != "") {
-					return true
-				}
-				return false
-			})
-			index, _ := strconv.ParseInt(indexstr, 10, 64)
-			gameplat = settings.GamePlatformType(index)
-
-			if gameplat == settings.GP_Sonkwo || gameplat == settings.GP_SteamWithSonkwo {
-				sonkwo_test_flag = botil.GetScanBoolFlag("is sonkwo client test(n/y):", false)
-			}
-			client_test_flag = botil.GetScanBoolFlag("is test client version(n/y):", false)
-		}
-	}
 
 	v,err:=sharedcode.GetEngineConfig(sharedcode.GeneralSectionName,sharedcode.GeneralEngineprojectPath)
 	if (err != nil ){
@@ -126,7 +101,17 @@ func BuildProject()error{
 	if (err != nil ){
 		return err
 	}
-	projectpath:=filepath.Join(v.String(),"GameProject_Test","GameProject.uproject")
+	projectfilename:=""
+	rd, err := ioutil.ReadDir(v.String())
+	for _, fi := range rd {
+		if !fi.IsDir() {
+			if(filepath.Ext(fi.Name())==".uproject"){
+				projectfilename=fi.Name()
+				break;
+			}
+		}
+	}
+	projectpath:=filepath.Join(v.String(),projectfilename)
 
 	v,err=sharedcode.GetEngineConfig(sharedcode.GeneralSectionName,sharedcode.GeneralBuildpath)
 	if (err != nil ){
@@ -145,7 +130,7 @@ func BuildProject()error{
 	c := make(chan os.Signal, 1)
 	cwd,err:=os.Getwd()
 	if(err!=nil) {return err}
-	logfile, err := os.OpenFile(filepath.Join(cwd,"llbuild.log"), os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0755)
+	logfile, err := os.OpenFile(filepath.Join(cwd,"UATbuild.log"), os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0755)
 	//logerrfile, err := os.OpenFile(filepath.Join(cwd,"llbuilderr.log"), os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0755)
 	if err == nil {
 		var logmux sync.Mutex
@@ -254,16 +239,6 @@ func BuildProject()error{
 		myarchivefolder:=archivefolder
 		if(!PackFlag){
 			myarchivefolder+="_notpaked"
-		}else {
-			if (settings.GetGamePlatformStr(gameplat) != "") {
-				myarchivefolder += ("_" + settings.GetGamePlatformStr(gameplat))
-			}
-			if (client_test_flag) {
-				myarchivefolder += "_testclient"
-			}
-			if(sonkwo_test_flag) {
-				myarchivefolder += "_sonkwotest"
-			}
 		}
 
 		err = os.RemoveAll(myarchivefolder)

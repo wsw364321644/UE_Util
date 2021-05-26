@@ -12,11 +12,9 @@ type flags struct {
 	SILENCE bool
 	PLATFORM string
 	CONFIG string
-	GAMEPLAT string
+
 	ONLYCOOK bool
 	PACK bool
-	TESTGAME bool
-	SONKWOTEST bool
 }
 var Flags flags
 func init() {
@@ -30,19 +28,14 @@ func init() {
 		plat=v
 		break
 	}
-	gplat:=""
-	for _,v:=range GamePlatforms{
-		gplat=v
-		break
-	}
+
 	flag.StringVar(&Flags.PLATFORM, "plat", plat, GetAllPlatformStr())
 	flag.StringVar(&Flags.CONFIG, "conf", Configurations[0], GetAllConf())
-	flag.StringVar(&Flags.GAMEPLAT,"gameplat" , gplat, GetAllGamePlatformStr())
 
 	flag.BoolVar(&Flags.ONLYCOOK,"onlycook" , false, "only cook resource")
 	flag.BoolVar(&Flags.PACK,"pack" , false, "pack resource")
-	flag.BoolVar(&Flags.TESTGAME,"testgame" , false, "test check version")
-	flag.BoolVar(&Flags.SONKWOTEST,"sonkwotest" , false, "for sonkwo test client")
+
+
 	flag.Parse()
 
 
@@ -56,11 +49,7 @@ func init() {
 		flag.PrintDefaults()
 		log.Panic("wrong plat")
 	}
-	_,err=ParseGamePlatformStr(Flags.GAMEPLAT)
-	if(err!=nil){
-		flag.PrintDefaults()
-		log.Panic("wrong game plat")
-	}
+
 
 }
 
@@ -143,47 +132,3 @@ func ParsePlatformStr(str string)(PlatformType,error){
 	return Plat_Begin,errors.New("plat error")
 }
 
-
-
-
-
-
-
-
-type GamePlatformType int
-const (
-	GP_Begin GamePlatformType = iota
-	GP_Steam
-	GP_SteamWithSonkwo
-	GP_Sonkwo
-	GP_End
-)
-var GamePlatforms = map[GamePlatformType]string{
-	GP_Steam:"Steam",
-	GP_SteamWithSonkwo:"SteamWithSonkwo",
-	GP_Sonkwo:"Sonkwo",
-}
-func GetGamePlatformStr(p GamePlatformType) string{
-	t,ok:=GamePlatforms[p]
-	if(ok){
-		return t
-	}else{
-		return ""
-	}
-}
-func GetAllGamePlatformStr() string{
-	root:=""
-	for _,v:=range GamePlatforms{
-		root+=v
-		root+="\n"
-	}
-	return root
-}
-func ParseGamePlatformStr(str string)(GamePlatformType,error){
-	for k,v:=range GamePlatforms{
-		if v==str{
-			return k,nil
-		}
-	}
-	return GP_Begin,errors.New("plat error")
-}
