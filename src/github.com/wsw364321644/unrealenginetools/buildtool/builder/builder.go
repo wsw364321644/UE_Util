@@ -240,26 +240,26 @@ func BuildProject()error{
 		if(!PackFlag){
 			myarchivefolder+="_notpaked"
 		}
-
-		err = os.RemoveAll(myarchivefolder)
-		if (err != nil) {
-			return err
-		}
-		retrytime:=0
-		for{
-			err = os.Rename(archivefolder, myarchivefolder)
+		if(myarchivefolder!=archivefolder) {
+			err = os.RemoveAll(myarchivefolder)
 			if (err != nil) {
-				if(retrytime>5){
-					return err
-				}else {
-					time.Sleep(time.Second*5)
-					retrytime++
+				return err
+			}
+			retrytime := 0
+			for {
+				err = os.Rename(archivefolder, myarchivefolder)
+				if (err != nil) {
+					if (retrytime > 5) {
+						return err
+					} else {
+						time.Sleep(time.Second * 5)
+						retrytime++
+					}
+				} else {
+					break;
 				}
-			}else{
-				break;
 			}
 		}
-
 	}
 
 
