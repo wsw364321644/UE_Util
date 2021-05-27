@@ -82,7 +82,7 @@ func BuildProject()error{
 		index, _ = strconv.ParseInt(indexstr, 10, 64)
 		buildConfiguration = settings.Configurations[index]
 
-		//UATFlag:=botil.GetScanBoolFlag("compile UAT AutomationToolLauncher(y/n):",true)
+		UATFlag=botil.GetScanBoolFlag("compile UAT AutomationToolLauncher(y/n):",true)
 
 		OnlyCookFlag = botil.GetScanBoolFlag("onlycook (n/y):", false)
 		PackFlag = false
