@@ -15,22 +15,8 @@ import (
 var path = flag.String("path", "", "path")
 var exts = flag.String("exts", ".h .c .cpp .hpp   .cs", "exts")
 var extlist []string
-type ModeType int
-const (
-	Mode_Client ModeType = iota
-	Mode_Server
-	Mode_End
-)
-func GetModeStr(mt ModeType) string{
-	switch (mt){
-	case Mode_Client:
-		return "client"
-	case Mode_Server:
-		return "server"
-	default:
-		return ""
-	}
-}
+
+
 func main() {
 	flag.Parse()
 	extlist=strings.Fields(*exts)
